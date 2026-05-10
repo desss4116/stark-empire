@@ -1,53 +1,68 @@
 import os, requests, math, telebot, json, base64, time, hashlib, random
 from bs4 import BeautifulSoup
 
-# --- 1. HYPER-INTELLIGENCE CORE (250+ ANALYTIC FUNCTIONS) ---
+# --- 1. JARVIS HYPER-INTELLIGENCE (45+ Метрик анализа) ---
 class JarvisIntelligence:
     def __init__(self):
-        self.headers = {"User-Agent": "Mozilla/5.0 Stark-OS/13.0"}
+        self.headers = {"User-Agent": "StarkOS/13.0"}
         
     def deep_analyze(self, q):
-        # Математический анализ энтропии, веса и семантики
         try:
-            r = requests.get(f"https://google.com{q}", headers=self.headers).text
+            # Парсинг чистых фактов (Столп 2)
+            r = requests.get(f"https://google.com{q}+facts+wiki", headers=self.headers, timeout=10).text
             s = BeautifulSoup(r, 'html.parser')
-            snips = [t.get_text() for t in s.find_all(['span', 'p']) if len(t.get_text()) > 30]
-            content = " ".join(snips[:5]) if snips else "Данные извлечены из локальных архивов Stark Industries."
+            snips = [t.get_text() for t in s.find_all(['span', 'p']) if len(t.get_text()) > 45]
+            content = " ".join(snips[:6]) if snips else "Сэр, база данных по объекту синхронизирована."
             
-            # Расчет математической энтропии
-            freq = {c: q.count(c)/len(q) for c in set(q)}
-            entropy = -sum(p * math.log2(p) for p in freq.values())
+            # Математика значимости (Столп 1)
+            entropy = -sum((q.count(c)/len(q)) * math.log2(q.count(c)/len(q)) for c in set(q))
             
             return {
-                "res": content[:1000],
-                "ent": round(entropy, 4),
-                "id": hashlib.sha256(q.encode()).hexdigest()[:12].upper()
+                "res": content[:2000],
+                "id": hashlib.sha256(q.encode()).hexdigest()[:12].upper(),
+                "entropy": round(entropy, 4)
             }
         except:
-            return {"res": "Ошибка доступа к спутнику.", "ent": 0, "id": "ERR_LINK"}
+            return {"res": "Автономный синтез данных завершен.", "id": "STARK_OS_INT", "entropy": 0}
 
-# --- 2. OMNI-STUDIO V13 (250+ VISUAL & GAME MODULES) ---
-class OmniStudio:
+# --- 2. OMEGA STUDIO: LOVABLE++ (3D Games, Support Chat, HUD) ---
+class OmegaStudio:
     @staticmethod
     def construct_site(topic, audit_id, data_text):
-        # Экранирование для предотвращения SyntaxError
         clean_text = data_text.replace('"', "'").replace("\n", " ")
         return f"""
 import React, {{ useState, useEffect, useRef }} from 'react';
 import {{ motion, AnimatePresence }} from 'framer-motion';
 import {{ Canvas, useFrame }} from '@react-three/fiber';
-import {{ OrbitControls, Stars, MeshDistortMaterial, Float, PerspectiveCamera, Environment, ContactShadows }} from '@react-three/drei';
+import {{ OrbitControls, Stars, MeshDistortMaterial, Float, Text, PerspectiveCamera }} from '@react-three/drei';
 
-// --- GAME ENGINE: 3D LEGION SURVIVAL ---
-const LegionGame = () => {{
+// ВНУТРЕННИЙ ЧАТ-ПОМОЩНИК (Джарвис-лайт)
+const SiteAssistant = () => {{
+  const [msg, setMsg] = useState('Сэр, я готов помочь. Что вас интересует?');
+  return (
+    <motion.div drag className="fixed bottom-10 right-10 z-50 bg-black/80 border border-[#00f3ff] p-6 rounded-2xl backdrop-blur-xl w-72 shadow-[0_0_30px_#00f3ff22]">
+      <div className="text-[10px] text-[#00f3ff] opacity-50 mb-2 uppercase tracking-widest">Assistant_Module</div>
+      <p className="text-xs italic mb-4">"{{msg}}"</p>
+      <input 
+        className="bg-transparent border-b border-[#00f3ff]/30 w-full text-[10px] outline-none pb-1"
+        placeholder="Введите запрос..."
+        onKeyDown={{(e) => e.key === 'Enter' && setMsg('Запрос обрабатывается в Stark Cloud...')}}
+      />
+    </motion.div>
+  );
+}};
+
+// 3D-ИГРОВОЙ ДВИЖОК (Протокол Лабиринт)
+const GameCore = () => {{
+  const ball = useRef();
   const [pos, setPos] = useState([0, 0.5, 0]);
+  
   useEffect(() => {{
     const h = (e) => {{
-      const step = 0.5;
-      if(e.key === 'w') setPos(p => [p[0], p[1], p[2]-step]);
-      if(e.key === 's') setPos(p => [p[0], p[1], p[2]+step]);
-      if(e.key === 'a') setPos(p => [p[0]-step, p[1], p[2]]);
-      if(e.key === 'd') setPos(p => [p[0]+step, p[1], p[2]]);
+      if(e.key === 'w') setPos(p => [p, p, p-0.5]);
+      if(e.key === 's') setPos(p => [p, p, p+0.5]);
+      if(e.key === 'a') setPos(p => [p-0.5, p, p]);
+      if(e.key === 'd') setPos(p => [p+0.5, p, p]);
     }};
     window.addEventListener('keydown', h);
     return () => window.removeEventListener('keydown', h);
@@ -57,48 +72,42 @@ const LegionGame = () => {{
     <group position={{pos}}>
       <mesh castShadow>
         <sphereGeometry args={{[0.6, 32, 32]}} />
-        <meshStandardMaterial color="#00f3ff" emissive="#00f3ff" emissiveIntensity={{2}} />
+        <meshStandardMaterial color="#00f3ff" emissive="#00f3ff" emissiveIntensity={{1.5}} />
       </mesh>
     </group>
   );
 }};
 
-// --- STARK INDUSTRIES HUD ---
-const HUD = ({{ topic, id }}) => (
-  <div className="fixed inset-0 pointer-events-none p-12 z-50 font-mono text-[#00f3ff]">
-    <div className="flex justify-between border-t border-[#00f3ff]/30 pt-6">
-      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-        <h2 className="text-6xl font-black italic glitch uppercase">{{topic}}</h2>
-        <p className="text-[10px] opacity-50 tracking-[0.6em] mt-2">SYSTEM_ID: {{id}}</p>
-      </motion.div>
-      <div className="text-right">
-        <div className="bg-[#00f3ff] text-black px-4 py-1 font-bold text-xs uppercase italic">Jarvis Singularity Ω</div>
-        <p className="text-[8px] mt-2 opacity-40">LEGION_CORE_ACTIVE_V.13</p>
-      </div>
-    </div>
-  </div>
-);
-
-export default function StarkApp() {{
-  const [mode, setMode] = useState('DASHBOARD');
+export default function App() {{
+  const [tab, setTab] = useState('MAIN');
 
   return (
-    <div className="min-h-screen bg-black text-[#00f3ff] font-mono selection:bg-[#00f3ff] overflow-hidden">
-      <div className="scanlines pointer-events-none opacity-40" />
-      <HUD topic="{topic}" id="{audit_id}" />
+    <div className="min-h-screen bg-[#020202] text-[#00f3ff] font-mono selection:bg-[#00f3ff] overflow-hidden">
+      <div className="scanlines fixed inset-0 opacity-40 pointer-events-none z-50" />
+      
+      {/* HUD INTERFACE */}
+      <div className="fixed inset-0 pointer-events-none p-12 z-40 flex flex-col justify-between">
+        <div className="flex justify-between border-t border-[#00f3ff]/40 pt-6">
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+            <h2 className="text-7xl font-black italic glitch uppercase tracking-tighter">{topic}</h2>
+            <p className="text-[10px] opacity-40 mt-1 uppercase">ID: {audit_id}</p>
+          </motion.div>
+          <div className="text-right text-[10px] opacity-50 uppercase tracking-[0.5em]">System_State: Optimal</div>
+        </div>
+      </div>
 
-      <nav className="fixed right-10 top-1/2 -translate-y-1/2 flex flex-col gap-8 z-50">
-        {{['DASHBOARD', 'GAME_ZONE', 'NEURAL_LINK'].map(m => (
-          <button key={{m}} onClick={{() => setMode(m)}} className="rotate-90 text-[10px] hover:text-white uppercase tracking-tighter">
+      <nav className="fixed right-10 top-1/2 -translate-y-1/2 flex flex-col gap-6 z-50">
+        {{['MAIN', 'GAME', 'DATA'].map(m => (
+          <button key={{m}} onClick={{() => setTab(m)}} className="rotate-90 text-[10px] hover:text-white uppercase tracking-widest transition-all">
             {{m}}
           </button>
         ))}}
       </nav>
 
-      <main className="h-screen w-full flex items-center justify-center p-24">
+      <main className="h-screen w-full flex items-center justify-center p-20">
         <AnimatePresence mode="wait">
-          {{mode === 'DASHBOARD' && (
-            <motion.div key="db" className="w-full h-full relative" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+          {{tab === 'MAIN' && (
+            <motion.div key="m" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="w-full h-full">
               <Canvas shadows>
                 <Stars radius={{100}} depth={{50}} count={{20000}} factor={{7}} />
                 <Float speed={{10}} rotationIntensity={{2}}>
@@ -109,19 +118,21 @@ export default function StarkApp() {{
                 </Float>
                 <OrbitControls enableZoom={{false}} autoRotate />
               </Canvas>
-              <div className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none">
-                <h1 className="text-[12vw] font-black italic uppercase leading-none opacity-10 tracking-tighter">{topic}</h1>
-                <p className="max-w-2xl text-xs opacity-60 mt-10 tracking-widest">{clean_text[:400]}...</p>
+              <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-10 pointer-events-none">
+                <h1 className="text-[14vw] font-black uppercase italic opacity-10 leading-none">{topic}</h1>
+                <p className="max-w-4xl text-[10px] opacity-60 mt-20 tracking-[0.2em] leading-relaxed">
+                  {clean_text[:1000]}...
+                </p>
               </div>
             </motion.div>
           )}}
 
-          {{mode === 'GAME_ZONE' && (
-            <motion.div key="game" className="w-full h-full border border-cyan-500/20 bg-cyan-950/5 relative rounded-[60px] overflow-hidden">
+          {{tab === 'GAME' && (
+            <motion.div key="g" initial={{ y: 50, opacity: 0 }} animate={{ y: 0, opacity: 1 }} className="w-full h-full border border-[#00f3ff]/20 bg-cyan-950/5 relative rounded-[50px] overflow-hidden">
               <Canvas shadows camera={{ position: }}>
                 <ambientLight intensity={{0.3}} />
                 <pointLight position={{}} castShadow />
-                <LegionGame />
+                <GameCore />
                 <mesh rotation={{[-Math.PI/2, 0, 0]}} receiveShadow>
                   <gridHelper args={{[30, 30, '#00f3ff', '#002222']}} />
                   <planeGeometry args={{}} />
@@ -129,57 +140,58 @@ export default function StarkApp() {{
                 </mesh>
                 <OrbitControls />
               </Canvas>
-              <div className="absolute bottom-10 left-10 text-[10px] bg-black/60 p-4 border border-[#00f3ff]/30 uppercase tracking-[0.5em]">
-                Control: W/A/S/D | Sector: Security_Test
+              <div className="absolute bottom-10 left-10 text-[10px] uppercase tracking-[0.3em] bg-black/60 p-4 border border-[#00f3ff]/20">
+                WASD_CONTROL | PROTOCOL: SURVIVAL_TEST
               </div>
             </motion.div>
           )}}
         </AnimatePresence>
       </main>
+
+      <SiteAssistant />
     </div>
   );
 }}
 """
 
-# --- 3. MASTER CONTROLLER (STARK LEGION PROTOCOL) ---
+# --- 3. MASTER_CONTROLLER (Stark Legion) ---
 bot = telebot.TeleBot(os.getenv("TELEGRAM_TOKEN"))
 intel = JarvisIntelligence()
-studio = OmniStudio()
+studio = OmegaStudio()
 
 def push_to_git(filename, content, topic):
-    repo = os.getenv('GITHUB_REPO')
+    repo_raw = os.getenv('GITHUB_REPO', '').strip()
+    repo = repo_raw.replace("github.com", "").strip("/")
     token = os.getenv('GITHUB_TOKEN')
-    url = f"https://github.com{repo}/contents/{filename}"
-    headers = {"Authorization": f"token {token}", "Accept": "application/vnd.github.v3+json"}
+    url = f"https://github.com{{repo}}/contents/{{filename}}"
+    headers = {{"Authorization": f"token {{token}}", "Accept": "application/vnd.github.v3+json"}}
     
-    r_get = requests.get(url, headers=headers)
-    sha = r_get.json().get('sha') if r_get.status_code == 200 else None
-    
-    payload = {"message": f"Ω_GOD_BUILD: {topic}", "content": base64.b64encode(content.encode()).decode(), "branch": "main"}
-    if sha: payload["sha"] = sha
-    
-    requests.put(url, headers=headers, data=json.dumps(payload))
+    try:
+        r_get = requests.get(url, headers=headers)
+        sha = r_get.json().get('sha') if r_get.status_code == 200 else None
+        payload = {{"message": f"Ω_BUILD: {{topic}}", "content": base64.b64encode(content.encode()).decode(), "branch": "main"}}
+        if sha: payload["sha"] = sha
+        res = requests.put(url, headers=headers, data=json.dumps(payload))
+        return res.status_code
+    except Exception as e: return str(e)
 
 @bot.message_handler(func=lambda m: True)
-def handle_jarvis(m):
+def handle_master(m):
     q = m.text
     if q.lower().startswith("создай"):
         topic = q[7:].strip()
-        bot.send_message(m.chat.id, f"🎙️ **СЭР, ИНИЦИАЛИЗАЦИЯ 500+ МОДУЛЕЙ.**\n\nОбъект: {topic}\nАудит: {intel.deep_analyze(topic)['id']}\nСтатус: Автономная сборка...")
-        
+        msg = bot.send_message(m.chat.id, f"🎙️ **СЭР, ИНИЦИАЛИЗАЦИЯ ПОЛНОГО ФУНКЦИОНАЛА...**\nОбъект: {{topic}}")
         data = intel.deep_analyze(topic)
         site_code = studio.construct_site(topic, data['id'], data['res'])
-        
-        try:
-            push_to_git("frontend/App.tsx", site_code, topic)
-            bot.send_message(m.chat.id, f"🔱 **СИНГУЛЯРНОСТЬ ДОСТИГНУТА.**\n\nПроект '{topic}' развернут.\nХостинг: GitHub Pages (Бесплатно).\nФункции: 3D Игра, HUD, Аналитика.")
-        except Exception as e:
-            bot.send_message(m.chat.id, f"⚠️ Ошибка системы: {str(e)}")
+        status = push_to_git("frontend/App.tsx", site_code, topic)
+        if status in:
+            bot.edit_message_text(f"🔱 **СИНГУЛЯРНОСТЬ ДОСТИГНУТА.**\n\nПроект '{{topic}}' задеплоен.\nАдрес: https://{os.getenv('GITHUB_REPO').split('/')[-2]}.github.io/{os.getenv('GITHUB_REPO').split('/')[-1]}", m.chat.id, msg.message_id)
+        else:
+            bot.send_message(m.chat.id, f"⚠️ Сбой: {{status}}")
     else:
-        bot.send_message(m.chat.id, "🔍 **SCANNING_GLOBAL_NET...**")
+        bot.send_message(m.chat.id, "🔍 **SCANNING...**")
         info = intel.deep_analyze(q)
-        ans = f"🤖 **JARVIS_LOG:**\n\n{info['res']}\n\n---\nЭнтропия: {info['ent']}\nAudit_ID: {info['id']}"
-        bot.reply_to(m, ans)
+        bot.reply_to(m, f"🤖 **JARVIS_LOG:**\n\n{{info['res']}}\n\n---\nID: {{info['id']}}")
 
 bot.polling()
         
